@@ -9,17 +9,26 @@ namespace DependencyInjection
 {
   public class Startup
   {
-    public Startup(IConfiguration configuration)
+    public Startup(IConfiguration configuration, IWebHostEnvironment env)
     {
       Configuration = configuration;
+      Environment = env;
     }
 
     public IConfiguration Configuration { get; }
+    public IWebHostEnvironment Environment { get; }
 
     public void ConfigureServices(IServiceCollection services)
     {
       services.AddControllers();
-      services.AddTransient<IPaymentService, PaymentService>();
+      if (Environment.IsDevelopment())
+      {
+        services.AddTransient<IPaymentService, PaymentService>();
+      }
+      else
+      {
+        services.AddTransient<IPaymentService, ExternalPaymentService>();
+      }
     }
 
     public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
