@@ -1,5 +1,5 @@
-using System.Collections.Generic;
 using Microsoft.AspNetCore.Mvc;
+using DependencyInjection.Services;
 
 namespace DependencyInjection.Controllers
 {
@@ -7,9 +7,16 @@ namespace DependencyInjection.Controllers
   [Route("[controller]")]
   public class ValuesController : ControllerBase
   {
+    private readonly IPaymentService paymentService;
+    
+    public ValuesController(IPaymentService paymentService)
+    {
+      this.paymentService = paymentService;
+    }
+
     public string Get()
     {
-      return string.Empty;
+      return paymentService.GetMessage();
     }
   }
 }
