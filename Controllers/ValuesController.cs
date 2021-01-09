@@ -7,14 +7,9 @@ namespace DependencyInjection.Controllers
   [Route("[controller]")]
   public class ValuesController : ControllerBase
   {
-    private readonly IPaymentService paymentService;
-    
-    public ValuesController(IPaymentService paymentService)
-    {
-      this.paymentService = paymentService;
-    }
-
-    public string Get()
+    [HttpGet]
+    public ActionResult<string> Get(
+      [FromServices] IPaymentService paymentService)
     {
       return paymentService.GetMessage();
     }
